@@ -1,0 +1,98 @@
+---
+title: "DataEntry"
+output: html_document
+---
+
+###########################
+Package load and retrieval
+###########################
+```{r,warning=F}
+#necessary packages: 
+pack_list<-list ("ggplot2","openair","dygraphs","xts","dataRetrieval","dplyr","forecast","glue")
+for(i in 1:length(pack_list)){
+  p <- pack_list[[i]]
+  install.packages(p,repos = "https://cran.rstudio.com",dependencies = TRUE)
+}
+
+install.packages("devtools")
+install.packages("dataRetrieval", repos=c("http://owi.usgs.gov/R",getOption("repos")))
+library(devtools)
+```
+
+#########################################################################################################
+NUTRIENT Data input from .csv and STROUD RESEARCH server. File is named as Valett Lab output.
+------WorkDirectory and Filename may need to be changed
+------File include date, site, replicate, concenration  
+#########################################################################################################
+```{r setup, include=FALSE}
+library(dplyr)
+setwd("C:/Users/admin/Dropbox/LTREB_UCFR_nutrient data")
+nitrate_series = read.csv("nitrate_series.csv"); tail(nitrate_series,1)
+nitrate_series2 = read.csv("nitrate_Jan2017_Jul2019.csv") ; head(nitrate_series2,1)
+nitrate_series = rbind(nitrate_series,nitrate_series2)
+write.csv(nitrate_series, file = "nitrate_series.csv")
+```
+
+##################################################################
+DISCHARGE data input via URL from USGS using dataRetrieval package
+##################################################################
+```{r}
+library(dataRetrieval)#check station code online (usually an 8-15digit numebr)
+###Input request specifications:
+siteNo <- "12323800" #Site 2; Clark Fork near Galen MT - 12323800
+pCode <- "00060"
+start.date <- "2017-08-01"
+end.date <- "2019-08-01" #----------------------------------------------change end date accordingly
+####retrieve daily average Q
+        q_daily <- readNWISdv(siteNumbers = siteNo, 
+                            parameterCd = pCode, 
+                            startDate = start.date, 
+                            endDate = end.date) 
+Site2_Q = q_daily###Input request specifications:
+
+siteNo <- "12324200" #Site 6; Clark Fork at Deer Lodge MT - 12324200
+        q_daily <- readNWISdv(siteNumbers = siteNo, 
+                            parameterCd = pCode, 
+                            startDate = start.date, 
+                            endDate = end.date) 
+Site6_Q = q_daily
+
+siteNo <- "12324400" #Site 8; Clark Fork ab Little Blackfoot R nr Garrison MT - 12324400
+        q_daily <- readNWISdv(siteNumbers = siteNo, 
+                            parameterCd = pCode, 
+                            startDate = start.date, 
+                            endDate = end.date) 
+Site8_Q = q_daily
+
+siteNo <- "12324680" #Site 9; Clark Fork at Goldcreek MT - 12324680
+        q_daily <- readNWISdv(siteNumbers = siteNo, 
+                            parameterCd = pCode, 
+                            startDate = start.date, 
+                            endDate = end.date) 
+Site9_Q = q_daily
+
+siteNo <- "12331800" #Site 10; Clark Fork near Drummond MT - 12331800
+####retrieve daily average Q
+        q_daily <- readNWISdv(siteNumbers = siteNo, 
+                            parameterCd = pCode, 
+                            startDate = start.date, 
+                            endDate = end.date) 
+Site10_Q = q_daily
+
+siteNo <- "12334550" #Site 12; Clark Fork at Turah Bridge nr Bonner MT - 12334550
+        q_daily <- readNWISdv(siteNumbers = siteNo, 
+                            parameterCd = pCode, 
+                            startDate = start.date, 
+                            endDate = end.date) 
+Site12_Q = q_daily
+
+siteNo <- "12340500" #Site 13; Clark Fork above Missoula MT - 12340500
+        q_daily <- readNWISdv(siteNumbers = siteNo, 
+                            parameterCd = pCode, 
+                            startDate = start.date, 
+                            endDate = end.date) 
+Site13_Q = q_daily
+
+
+```  
+
