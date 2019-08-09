@@ -3,9 +3,9 @@ title: "DataEntry"
 output: html_document
 ---
 
-###########################
+#########################################################################################################
 Package load and retrieval
-###########################
+#########################################################################################################
 ```{r,warning=F}
 #necessary packages: 
 pack_list<-list ("ggplot2","openair","dygraphs","xts","dataRetrieval","dplyr","forecast","glue")
@@ -26,7 +26,7 @@ NUTRIENT Data input from .csv and STROUD RESEARCH server. File is named as Valet
 #########################################################################################################
 ```{r setup, include=FALSE}
 library(dplyr)
-setwd("C:/Users/admin/Dropbox/LTREB_UCFR_nutrient data")
+setwd("R:/EcosystemsLab/2017-2022 NSF-LTREB-ClarkFork/chemistry_data")
 nitrate_series = read.csv("nitrate_series.csv"); tail(nitrate_series,1)
 nitrate_series2 = read.csv("nitrate_Jan2017_Jul2019.csv") ; head(nitrate_series2,1)
 nitrate_series = rbind(nitrate_series,nitrate_series2)
@@ -95,4 +95,65 @@ Site13_Q = q_daily
 
 
 ```  
+
+#########################################################################################################
+Calculate means and merge with Q data
+Output is the final dataset to perform calculations
+#########################################################################################################
+```{r}
+library(xts);library(tidyverse);library(forecast);library(glue)
+detach(package:dplyr);library(dplyr)
+nitrate_series$date<-as.Date(nitrate_series$date, format = "%m/%d/%Y") #output is YYYY-mm-dd
+nitrate_series$concentration<-nitrate_series$concentration*1000 #change units to mg/m3
+ daily_nitrate_series = nitrate_series %>% group_by(date, site) %>%
+        summarise_at(vars(concentration), funs(mean(., na.rm = TRUE))) ###Average by date
+                  daily_nitrate_series$concentration = round(daily_nitrate_series$concentration,1)  
+                  daily_nitrate_series$concentration =  ifelse(daily_nitrate_series$concentration < 0, 1, daily_nitrate_series$concentration) ##Negative values are converted to low psotive numbers
+                  
+sub_sites <- c("s2", "s6","s8","s9","s10","s12","s13") 
+daily_nitrate_Q_series = filter(daily_nitrate_series, site %in% sub_sites) #sites with USGS data
+
+#pair each site with Q data, merge, and rbind in a unique data set
+temp = filter(daily_nitrate_Q_series, site == "s2")
+  qdata = Site2_Q[,3:4]
+    colnames(qdata)<-c("date","Discharge")
+      temp_s2 = merge(temp,qdata,by = c("date"))
+      
+temp = filter(daily_nitrate_Q_series, site == "s6")
+  qdata = Site6_Q[,3:4]
+    colnames(qdata)<-c("date","Discharge")
+      temp_s6 = merge(temp,qdata,by = c("date"))
+      
+temp = filter(daily_nitrate_Q_series, site == "s8")
+  qdata = Site8_Q[,3:4]
+    colnames(qdata)<-c("date","Discharge")
+      qdata[is.na(qdata)] <- 350 #to get rid of NA due to ice cover, value is typical for winter on this site
+      temp_s8 = merge(temp,qdata,by = c("date"))
+      
+temp = filter(daily_nitrate_Q_series, site == "s9")
+  qdata = Site9_Q[,3:4]
+    colnames(qdata)<-c("date","Discharge")
+      temp_s9 = merge(temp,qdata,by = c("date"))
+      
+temp = filter(daily_nitrate_Q_series, site == "s10")
+  qdata = Site10_Q[,3:4]
+    colnames(qdata)<-c("date","Discharge")
+      temp_s10 = merge(temp,qdata,by = c("date"))
+      
+temp = filter(daily_nitrate_Q_series, site == "s12")
+  qdata = Site12_Q[,3:4]
+    colnames(qdata)<-c("date","Discharge")
+      temp_s12 = merge(temp,qdata,by = c("date"))
+      
+temp = filter(daily_nitrate_Q_series, site == "s13")
+  qdata = Site13_Q[,3:4]
+    colnames(qdata)<-c("date","Discharge")
+      temp_s13 = merge(temp,qdata,by = c("date"))
+      
+daily_nitrate_Q_series_merged = rbind(temp_s2,temp_s6,temp_s8,temp_s9,temp_s10,temp_s12,temp_s13)
+
+
+```
+
+
 
