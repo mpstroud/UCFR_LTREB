@@ -19,9 +19,136 @@ ggplot(daily_nitrate_Q_series_merged, aes(date, Nload,colour=site)) +
   geom_line()  
 
 
-temp_data <- filter(daily_nitrate_Q_series_merged, site =="s9")
+temp_data <- filter(daily_nitrate_Q_series_merged, site =="s9") #one site check
 ggplot(temp_data, aes(date, Nload)) + 
   geom_point() + 
   geom_line()  #screen the general patterns
+```
+#########################################################################################################
+Q_gw= Q_down - Q_in   and deltaL= Nload_down - Nload_in
+#########################################################################################################
+```{r}
+site_in = "s2"
+site_down = "s6"
+Q_in <- filter(daily_nitrate_Q_series_merged, site == site_in) #upstream site-------CHANGE ACCORDINGLY
+Q_down <- filter(daily_nitrate_Q_series_merged, site == site_down) #downstream site---CHANGE ACCORDINGLY
+temp_netQ = merge(Q_down,Q_in,by = c("date"))
+    temp_netQ = temp_netQ %>% as_tibble() %>% na.omit() %>% 
+      mutate(
+      Q_gw = Discharge.x - Discharge.y, #Q-gw contains the Q difference for the reach
+      deltaL= Nload.x - Nload.y #deltaL contains the Nload difference for the reach
+      ) %>%
+          unite(reach, c("site.x", "site.y"))
+
+ggplot(temp_netQ, aes(date, deltaL)) + 
+  geom_point() + 
+  geom_line()  #screen the general patterns
+
+net_loads_UCFR <- temp_netQ[ ,c(1,2,9,10)]
+colnames(net_loads_UCFR) <- c("date","reach","Qgw","deltaL")
+
+##############################################################################################################################
+site_in = "s6"#-------CHANGE ACCORDINGLY
+site_down = "s8"#-----CHANGE ACCORDINGLY
+Q_in <- filter(daily_nitrate_Q_series_merged, site == site_in) #upstream site
+Q_down <- filter(daily_nitrate_Q_series_merged, site == site_down) #downstream site
+temp_netQ = merge(Q_down,Q_in,by = c("date"))
+    temp_netQ = temp_netQ %>% as_tibble() %>% na.omit() %>% 
+      mutate(
+      Q_gw = Discharge.x - Discharge.y, #Q-gw contains the Q difference for the reach
+      deltaL= Nload.x - Nload.y #deltaL contains the Nload difference for the reach
+      ) %>%
+          unite(reach, c("site.x", "site.y"))
+
+ggplot(temp_netQ, aes(date, deltaL)) + 
+  geom_point() + 
+  geom_line()  #screen the general patterns
+
+net_loads_UCFR_temp <- temp_netQ[ ,c(1,2,9,10)] ; colnames(net_loads_UCFR_temp) <- c("date","reach","Qgw","deltaL")
+net_loads_UCFR = rbind(net_loads_UCFR_temp, net_loads_UCFR)
+##############################################################################################################################
+site_in = "s8"#-------CHANGE ACCORDINGLY
+site_down = "s9"#-----CHANGE ACCORDINGLY
+Q_in <- filter(daily_nitrate_Q_series_merged, site == site_in) #upstream site
+Q_down <- filter(daily_nitrate_Q_series_merged, site == site_down) #downstream site
+temp_netQ = merge(Q_down,Q_in,by = c("date"))
+    temp_netQ = temp_netQ %>% as_tibble() %>% na.omit() %>% 
+      mutate(
+      Q_gw = Discharge.x - Discharge.y, #Q-gw contains the Q difference for the reach
+      deltaL= Nload.x - Nload.y #deltaL contains the Nload difference for the reach
+      ) %>%
+          unite(reach, c("site.x", "site.y"))
+
+ggplot(temp_netQ, aes(date, deltaL)) + 
+  geom_point() + 
+  geom_line()  #screen the general patterns
+
+net_loads_UCFR_temp <- temp_netQ[ ,c(1,2,9,10)] ; colnames(net_loads_UCFR_temp) <- c("date","reach","Qgw","deltaL")
+net_loads_UCFR = rbind(net_loads_UCFR_temp, net_loads_UCFR)
+##############################################################################################################################
+site_in = "s9"#-------CHANGE ACCORDINGLY
+site_down = "s10"#-----CHANGE ACCORDINGLY
+Q_in <- filter(daily_nitrate_Q_series_merged, site == site_in) #upstream site
+Q_down <- filter(daily_nitrate_Q_series_merged, site == site_down) #downstream site
+temp_netQ = merge(Q_down,Q_in,by = c("date"))
+    temp_netQ = temp_netQ %>% as_tibble() %>% na.omit() %>% 
+      mutate(
+      Q_gw = Discharge.x - Discharge.y, #Q-gw contains the Q difference for the reach
+      deltaL= Nload.x - Nload.y #deltaL contains the Nload difference for the reach
+      ) %>%
+          unite(reach, c("site.x", "site.y"))
+
+ggplot(temp_netQ, aes(date, deltaL)) + 
+  geom_point() + 
+  geom_line()  #screen the general patterns
+
+net_loads_UCFR_temp <- temp_netQ[ ,c(1,2,9,10)] ; colnames(net_loads_UCFR_temp) <- c("date","reach","Qgw","deltaL")
+net_loads_UCFR = rbind(net_loads_UCFR_temp, net_loads_UCFR)
+##############################################################################################################################
+site_in = "s10"#-------CHANGE ACCORDINGLY
+site_down = "s12"#-----CHANGE ACCORDINGLY
+Q_in <- filter(daily_nitrate_Q_series_merged, site == site_in) #upstream site
+Q_down <- filter(daily_nitrate_Q_series_merged, site == site_down) #downstream site
+temp_netQ = merge(Q_down,Q_in,by = c("date"))
+    temp_netQ = temp_netQ %>% as_tibble() %>% na.omit() %>% 
+      mutate(
+      Q_gw = Discharge.x - Discharge.y, #Q-gw contains the Q difference for the reach
+      deltaL= Nload.x - Nload.y #deltaL contains the Nload difference for the reach
+      ) %>%
+          unite(reach, c("site.x", "site.y"))
+
+ggplot(temp_netQ, aes(date, deltaL)) + 
+  geom_point() + 
+  geom_line()  #screen the general patterns
+
+net_loads_UCFR_temp <- temp_netQ[ ,c(1,2,9,10)] ; colnames(net_loads_UCFR_temp) <- c("date","reach","Qgw","deltaL")
+net_loads_UCFR = rbind(net_loads_UCFR_temp, net_loads_UCFR)
+
+theme_set(theme_bw()) 
+ggplot(net_loads_UCFR, aes(date, deltaL,colour=reach)) + #assess general trends
+ geom_point(size=3) + 
+  geom_segment(aes(x=date, 
+                   xend=date, 
+                   y=0, 
+                   yend=deltaL)) + 
+  labs(title="delta Nload", 
+       subtitle="August 2017 - May 2019", 
+       caption="source: LTREB") + 
+  theme(axis.text.x = element_text(angle=65, vjust=0.6)) + 
+   scale_color_brewer(palette="Set1")
+
+ggplot(net_loads_UCFR, aes(date, Qgw,colour=reach)) + 
+ geom_point(size=3) + 
+  geom_segment(aes(x=date, 
+                   xend=date, 
+                   y=0, 
+                   yend=deltaL)) + 
+  labs(title="delta Q load", 
+       subtitle="August 2017 - May 2019", 
+       caption="source: LTREB") + 
+  theme(axis.text.x = element_text(angle=65, vjust=0.6)) +
+  scale_color_brewer(palette="Set1")
+
 
 ```
+

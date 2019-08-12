@@ -26,7 +26,7 @@ NUTRIENT Data input from .csv and STROUD RESEARCH server. File is named as Valet
 #########################################################################################################
 ```{r setup, include=FALSE}
 library(dplyr)
-setwd("R:/EcosystemsLab/2017-2022 NSF-LTREB-ClarkFork/chemistry_data")
+setwd("C:/Users/admin/Dropbox/LTREB_UCFR_nutrient data")
 nitrate_series = read.csv("nitrate_series.csv"); tail(nitrate_series,1)
 nitrate_series2 = read.csv("nitrate_Jan2017_Jul2019.csv") ; head(nitrate_series2,1)
 nitrate_series = rbind(nitrate_series,nitrate_series2)
@@ -93,6 +93,12 @@ siteNo <- "12340500" #Site 13; Clark Fork above Missoula MT - 12340500
                             endDate = end.date) 
 Site13_Q = q_daily
 
+siteNo <- "12323850" #LostCreek; Lost Creek near Galen, MT - 12323850 
+        q_daily <- readNWISdv(siteNumbers = siteNo, 
+                            parameterCd = pCode, 
+                            startDate = start.date, 
+                            endDate = end.date) 
+LostCreek_Q = q_daily
 
 ```  
 
