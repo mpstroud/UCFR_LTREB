@@ -125,7 +125,8 @@ net_loads_UCFR_temp <- temp_netQ[ ,c(1,2,9,10)] ; colnames(net_loads_UCFR_temp) 
 net_loads_UCFR = rbind(net_loads_UCFR_temp, net_loads_UCFR)
 
 theme_set(theme_bw()) 
-ggplot(net_loads_UCFR, aes(date, deltaL,colour=reach)) + #assess general trends
+#assess general trends for deltaNload 
+ggplot(net_loads_UCFR, aes(date, deltaL,colour=reach)) + 
  geom_point(size=3) + 
   geom_segment(aes(x=date, 
                    xend=date, 
@@ -137,6 +138,7 @@ ggplot(net_loads_UCFR, aes(date, deltaL,colour=reach)) + #assess general trends
   theme(axis.text.x = element_text(angle=65, vjust=0.6)) + 
    scale_color_brewer(palette="Set1")
 
+#assess general trends for deltaQload 
 ggplot(net_loads_UCFR, aes(date, Qgw,colour=reach)) + 
  geom_point(size=3) + 
   geom_segment(aes(x=date, 
