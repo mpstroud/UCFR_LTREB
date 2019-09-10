@@ -1,0 +1,23 @@
+---
+title: "NPD_glms"
+output: html_document
+---
+
+#########################################################################################################
+Load calculation and visualization
+#########################################################################################################
+```{r,warning=F}
+library(tidyverse)
+library(equatiomatic)
+library(gapminder)
+
+new data <- data %>%
+  mutate(new var = old var * XXX)
+  OR select (data,XXX)
+  
+model <- glm(YYY ~ XXX + XXX, data, family, etc.)
+
+extract_eq(model,wrap=TRUE,terms_per_line=4)
+
+```
+

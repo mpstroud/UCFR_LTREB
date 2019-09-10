@@ -22,7 +22,7 @@ NUTRIENT Data input from .csv and STROUD RESEARCH server. File is named as Valet
 #################################################################################################
 ```{r setup, include=FALSE}
 library(dplyr)
-setwd("~/Documents/R/Rstudio/UCFR_LTREB")
+setwd("~/Documents/R/Rstudio/UCFR_LTREB") #in case is reuired, orherwise project folder is WD
 nitrate_series_raw = read.csv("nitrate_series.csv"); tail(nitrate_series,1)
 nitrate_series2 = read.csv("nitrate_Jan2017_Jul2019.csv") ; head(nitrate_series2,1)
 nitrate_series = rbind(nitrate_series_raw,nitrate_series2)
